@@ -4,7 +4,7 @@
       <div>
 
         <button @click="genaratePdf_B1">แบบฟอร์ม วฐ.บ.1</button>
-        <button @click="genarateHTML">genarate pdf with HTML2Canvas</button>
+        <button @click="genarateAssessmentForm">แบบเสนอขอรับการประเมิน</button>
         <button @click="genarateImage">HTML to image</button>
       </div>
       
@@ -310,6 +310,8 @@ export default {
                 }
                 });
 
+                pdf.text('สำหรับกรรมการชุดที่ ๑', 148, pdf_position_y+17, { align: 'left' });
+
                 //สร้างกรอบ สี่เหลี่ยม
                 pdf.setLineWidth(0.1);
                 /**
@@ -332,10 +334,13 @@ export default {
                  * - สีเส้นขอบใช้ setDrawColor(), ความหนาใช้ setLineWidth()
                  * - สีเติมใช้ setFillColor()
                  */
-                pdf.rect(20, 53, 170, 110);
+                //กรอบเล็ก
+                pdf.rect(140, 41, 50, 10);
+                //กรอบใหญ่
+                pdf.rect(20, 60, 170, 110);
 
                 //ข้อความในกรอบ
-                pdf_position_y = 61;
+                pdf_position_y += 36;
                 pdf.setFontSize(this.pdfConfig.typo.normal);
 
                 pdf.text('แบบบันทึกการประเมินด้านที่ ๑ ', 23, pdf_position_y, { align: 'left' });
@@ -406,8 +411,6 @@ export default {
                  pdf_position_y += -1.2;
                 const fullName = `${name}${surname}${postfix}`;
                 pdf.text(fullName, 80, pdf_position_y, { align: 'left' });
-
-
 
                 pdf_position_y += contentLineHeight+1.2;
                 pdf.text('วิทยฐานะปัจจุบัน..........................................................................................................................', 40, pdf_position_y, { align: 'left' });
@@ -638,7 +641,6 @@ export default {
                         }
                     });
 
-
                     tableDataNew.forEach((row, index) => {
                         // คำนวณความสูงที่ต้องการสำหรับแถวปัจจุบัน
                         const estimatedRowHeight = (Math.max(
@@ -741,8 +743,6 @@ export default {
                     //         { align: 'left', lineHeightFactor: this.pdfConfig.lineHeight.normal }
                     //     );
 
-
-
                         //pdf.text(row.col1, margin_l + 2, pdf_position_y + 5);
 
                     // pdf.text(row.col2, margin_l + col1Width + 2, pdf_position_y + 5);
@@ -761,8 +761,6 @@ export default {
                             scaleFactor: pdf.internal.scaleFactor
                         }).lineHeightUnit); // เพิ่ม padding เล็กน้อย
                         
-
-
                         // วาดเส้นตารางสำหรับแต่ละแถว โดยใช้ความสูงที่คำนวณจากจำนวนบรรทัดในแต่ละคอลัมน์
                         pdf.rect(margin_l, pdf_position_y, col1Width, currentRowHeight, 'S');
                         pdf.rect(margin_l + col1Width, pdf_position_y, col2Width, currentRowHeight, 'S');
@@ -815,9 +813,6 @@ export default {
                 pdf.rect(margin_l, pdf_position_y+48, tablewidth,22, 'S');//กรอบแนวนอนที่2 ตอนที่4
                 pdf.rect(margin_l, pdf_position_y+70, tablewidth,22, 'S');//กรอบแนวนอนที่2 ตอนที่4
 
-
-
-
                 pdf.rect(margin_l+65, pdf_position_y+7, 18,tableheight-15, 'S');//กรอบ ตัวบ่งชี้ที่ 1 
                 pdf.rect(margin_l+83, pdf_position_y+7, 18,tableheight-15, 'S');//กรอบ ตัวบ่งชี้ที่ 2 
                 pdf.rect(margin_l+101, pdf_position_y+7, 18,tableheight-15, 'S');//กรอบ ตัวบ่งชี้ที่ 3
@@ -825,11 +820,6 @@ export default {
                 pdf.rect(margin_l+137, pdf_position_y+7, 18,tableheight-15, 'S');//กรอบ ตัวบ่งชี้ที่ 5 
 
                 pdf.rect(margin_l+155, pdf_position_y, 25,tableheight, 'S');//กรอบ หมายเหตุ 
-
-
-                
-
-
 
                 //เขียนข้อความในตารางที่ fix
                 const rowTexts = [
@@ -1005,7 +995,7 @@ export default {
                 pdf.text(this.convertToThaiNumber(totalScoreAll.toString()), margin_l+167.5, pdf_position_y+22, { align: 'center' });
 
                 //บันทึกข้อสังเกตเพิ่มเติม
-                const strengths = 'ตามโครงการพัฒนาโครงสร้างพื้นฐานด้านเทคโนโลยีสารสนเทศ ประจำปีงบประมาณ พ.ศ. ๒๕๖๗ จำนวน ๑ งาน กับ บริษัท เพอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด เป็นจำนวนเงินรวมทั้งสิ้น ๑๖,๑๔๘,๘๐๐.- บาท (สิบหกล้านหนึ่งแสนสี่หมื่นแปดพันแปดร้อยบาทถ้วน)  สัญญาจ้างฯ เลขที่ ๕๒/๒๕๖๗ ลง ๒๓ ส.ค. ๖๗ โดย สส.ทหาร รับไว้ใช้ในราชการ เมื่อ ๒ ก.ค. ๖๘ พร้อมการรับประกันความเสียหายเป็นระยะเวลา ๓ ปี เริ่ม ๒ ก.ค. ๖๘ ครบกำหนด ๑ ก.ค. ๗๑ หากมีความชำรุดบกพร่องของพัสดุให้หน่วยผู้ใช้งานโดยตรงแจ้ง กจห.สส.ทหาร เพื่อประสาน บริษัท พอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด ให้เร่งดำเนินการแก้ไขให้สามารถใช้ในราชการได้ตามที่สัญญาฯ กำหนด ก่อนสิ้นสุดระยะเวลารับประกัน ๓๐ วัน';
+                const strengths = 'ตเพอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด เป็นจำนวนเงินรวมทั้งสิ้น ๑๖,๑๔๘,๘๐๐.- บาท (สิบหกล้านหนึ่งแสนสี่หมื่นแปดพันแปดร้อยบาทถ้วน)  สัญญาจ้างฯ เลขที่ ๕๒/๒๕๖๗ ลง ๒๓ ส.ค. ๖๗ โดย สส.ทหาร รับไว้ใช้ในราชการ เมื่อ ๒ ก.ค. ๖๘ พร้อมการรับประกันความเสียหายเป็นระยะเวลา ๓ ปี เริ่ม ๒ ก.ค. ๖๘ ครบกำหนด \n๑ ก.ค. ๗๑ หากมีความชำรุดบกพร่องของพัสดุให้หน่วยผู้ใช้งานโดยตรงแจ้ง กจห.สส.ทหาร เพื่อประสาน บริษัท พอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด ให้เร่งดำเนินการแก้ไขให้สามารถใช้ในราชการได้ตามที่สัญญาฯ กำหนด ก่อนสิ้นสุดระยะเวลารับประกัน ๓๐ วัน';
                 const weaknesses = 'บก.ทท. (สส.ทหาร) จ้างพัฒนาระบบ Learning Management System และ Online Course ตามโครงการพัฒนาโครงสร้างพื้นฐานด้านเทคโนโลยีสารสนเทศ ประจำปีงบประมาณ พ.ศ. ๒๕๖๗ จำนวน ๑ งาน กับ บริษัท เพอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด เป็นจำนวนเงินรวมทั้งสิ้น ๑๖,๑๔๘,๘๐๐.- บาท (สิบหกล้านหนึ่งแสนสี่หมื่นแปดพันแปดร้อยบาทถ้วน)  สัญญาจ้างฯ เลขที่ ๕๒/๒๕๖๗ ลง ๒๓ ส.ค. ๖๗ โดย สส.ทหาร รับไว้ใช้ในราชการ เมื่อ ๒ ก.ค. ๖๘ พร้อมการรับประกันความเสียหายเป็นระยะเวลา ๓ ปี เริ่ม ๒ ก.ค. ๖๘ ครบกำหนด ๑ ก.ค. ๗๑ หากมีความชำรุดบกพร่องของพัสดุให้หน่วยผู้ใช้งานโดยตรงแจ้ง กจห.สส.ทหาร เพื่อประสาน บริษัท พอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด ให้เร่งดำเนินการแก้ไขให้สามารถใช้ในราชการได้ตามที่สัญญาฯ กำหนด ก่อนสิ้นสุดระยะเวลารับประกัน ๓๐ วันบางครั้งยังขาดความมั่นใจในการสอน และอาจมีปัญหาในการจัดการกับผู้เรียนที่มีพฤติกรรมไม่เหมาะสม';
                 const comments = 'บก.ทท. (สส.ทหาร) จ้างพัฒนาระบบ Learning Management System และ Online Course ตามโครงการพัฒนาโครงสร้างพื้นฐานด้านเทคโนโลยีสารสนเทศ ประจำปีงบประมาณ พ.ศ. ๒๕๖๗ จำนวน ๑ งาน กับ บริษัท เพอร์เฟคคอมพิวเตอร์โซลูชัน จำกัด เป็นจำนวนเงินรวมทั้งสิ้น ๑๖,๑๔๘,๘๐๐.- บาท (สิบหกล้านหนึ่งแสนสี่หมื่นแปดพันแปดร้อยบาทถ้วน)  สัญญาจ้างฯ เลขที่ ๕๒/๒๕๖๗ ลง ๒๓ ส.ค. ๖๗ โดย สส.ทหาร รับไว้ใช้ในราชการ เมื่อ ๒ ก.ค. ๖๘ พร้อมการรับประกันความเสียหายเป็นระยะเวลา ๓ ปี เริ่ม ๒ ก.ค. ๖๘ ครบกำหนด ๑ ก.ค. ๗๑ หากมีความชำรุดบกพร่องของพัสดุให้หน่วยผู้ใช้งานโดยตรงแจ้ง กจห.สส.ทหาร เพื่อประสาน ควรพัฒนาทักษะการจัดการชั้นเรียน และเพิ่มความมั่นใจในการสอนผ่านการฝึกอบรมและการสะท้อนผลการสอนอย่างต่อเนื่อง';
 
@@ -1096,17 +1086,13 @@ export default {
                 pdf.text('ไม่ผ่านการประเมิน', 55, pdf_position_y, { align: 'left' });
 
                 //การลงชื่อผู้ประเมิน
+                let namedd = 'นายสมชาย ใจดี';
                 pdf.text('ลงชื่อ...........................................................กรรมการผู้ประเมิน', 100, pdf_position_y+15, { align: 'left' });
+               
                 pdf.text('(..........................................................)', 107, pdf_position_y+22, { align: 'left' });
+               //pdf.text($namedd, 117, pdf_position_y+20, { align: 'left' });
                 pdf.text('ตำแหน่ง.......................................................', 100, pdf_position_y+29, { align: 'left' });
                 pdf.text('วันที่............เดือน........................พ.ศ............', 100, pdf_position_y+36, { align: 'left' });
-
-
-
-
-
-
-
 
                  //****************************เก็บไว้ใช้ได้ */ 
                  //ตัวอย่างการสร้าง พารากราฟ แบบ มี ย่อหน้าที่บรรทัดแรก
@@ -1195,7 +1181,67 @@ export default {
             catch (err) {
                 console.log(err);
             }
-        }       
+        },
+            genarateAssessmentForm() {
+                try {
+                    let pdf = new jsPDF(this.pdfOption);
+                    const pdf_width = pdf.internal.pageSize.width;
+                    const pdf_height = pdf.internal.pageSize.height;
+                    const margin_l = this.pdfConfig.margin.l;
+                    const margin_r = this.pdfConfig.margin.r;
+
+                    let pdf_position_y = this.pdfConfig.margin.t;
+
+                    pdf.setFont('THSarabunNew','bold');
+                    pdf.setTextColor('#000000');
+
+                    // หัวเรื่อง
+                    pdf.setFontSize(this.pdfConfig.typo.large);
+                    pdf.text('แบบเสนอขอรับการประเมิน', pdf_width / 2, pdf_position_y, { align: 'center' });
+                    pdf.text('ของข้าราชการทหารที่ทำหน้าที่สอนในการขอให้มีวิทยฐานะหรือเลื่อนวิทยฐานะ', pdf_width / 2, pdf_position_y+9, { align: 'center' });
+                    pdf.setDrawColor(0, 0, 0);
+                    pdf.setLineWidth(0.2);
+                    pdf_position_y += 18;
+                    pdf.line(pdf_width / 2 - 30, pdf_position_y, pdf_width / 2 + 30, pdf_position_y);
+
+                    pdf_position_y += 10;
+                    pdf.setFontSize(this.pdfConfig.typo.normal);
+
+                    // ข้อมูลผู้ขอรับการประเมิน
+                    //pdf.text('ข้อมูลผู้ขอรับการประเมิน', margin_l, pdf_position_y);
+                    pdf_position_y += 8;
+
+                    // เพิ่มหมายเลขหน้าและวันเวลา
+                    setTimeout(() => {
+                        pdf.setFont('THSarabunNew','normal');
+                        pdf.setFontSize(this.pdfConfig.typo.small);
+                        pdf.setTextColor('#000');
+                        const textDate = (new Date()).toString();
+                        const pages = pdf.internal.getNumberOfPages();
+
+                        for (let j = 1; j < pages + 1; j++) {
+                            pdf.setPage(j);
+                            pdf.text(`วันเวลา : ${textDate}`, margin_l, pdf_height - 10);
+                            const thaiNumber = this.convertToThaiNumber(j) + ' จาก ' + this.convertToThaiNumber(pages);
+                            pdf.text(`หน้า ${thaiNumber}`, pdf_width - margin_r, pdf_height - 10, null, null, "right");
+                        }
+
+                        pdf.output('dataurlnewwindow');
+                    }, 0);
+
+                } catch (err) {
+                    console.log(err);
+                }
+            },
+            genarateImage() {
+                const element = document.getElementById('FormExample');
+                html2canvas(element, this.canvasOption).then(canvas => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'form_image.png';
+                    link.click();
+                });
+            }
     }
 }
 </script>
